@@ -1,3 +1,8 @@
+using BlessedBarbershop.API.Persistence;
+using BlessedBarbershop.API.Services.Cliente;
+using BlessedBarbershop.API.Services.ProdutoServico;
+using BlessedBarbershop.API.Services.Venda;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +26,15 @@ builder.Services.AddSwaggerGen(x =>
     var xmlFile = "BlessedBarbershop.API.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     x.IncludeXmlComments(xmlPath);
+});
+
+builder.Services.AddScoped<IProdutoServicoInterface, ProdutoServicoService>();
+builder.Services.AddScoped<IClienteInterface, ClienteService>();
+builder.Services.AddScoped<IVendaInterface, VendaService>();
+
+builder.Services.AddDbContext<BlessedBarbershopDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BlessedBarbershopCs"));
 });
 
 var app = builder.Build();
