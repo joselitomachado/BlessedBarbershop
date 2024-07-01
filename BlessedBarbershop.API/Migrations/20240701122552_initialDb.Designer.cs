@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlessedBarbershop.API.Migrations
 {
     [DbContext(typeof(BlessedBarbershopDbContext))]
-    [Migration("20240701105952_initialMigration")]
-    partial class initialMigration
+    [Migration("20240701122552_initialDb")]
+    partial class initialDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,13 +35,13 @@ namespace BlessedBarbershop.API.Migrations
 
                     b.Property<string>("DDD")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("DataCadastro")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -49,7 +49,7 @@ namespace BlessedBarbershop.API.Migrations
 
                     b.Property<string>("NumeroCelular")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Pontos")
                         .HasColumnType("int");
@@ -59,6 +59,13 @@ namespace BlessedBarbershop.API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
+
+                    b.HasIndex("DDD", "NumeroCelular")
+                        .IsUnique();
 
                     b.ToTable("Clientes");
                 });
@@ -80,12 +87,15 @@ namespace BlessedBarbershop.API.Migrations
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Valor")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Nome")
+                        .IsUnique();
 
                     b.ToTable("ProdutosServicos");
                 });

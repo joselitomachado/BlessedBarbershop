@@ -32,13 +32,13 @@ namespace BlessedBarbershop.API.Migrations
 
                     b.Property<string>("DDD")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("DataCadastro")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -46,7 +46,7 @@ namespace BlessedBarbershop.API.Migrations
 
                     b.Property<string>("NumeroCelular")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Pontos")
                         .HasColumnType("int");
@@ -56,6 +56,13 @@ namespace BlessedBarbershop.API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
+
+                    b.HasIndex("DDD", "NumeroCelular")
+                        .IsUnique();
 
                     b.ToTable("Clientes");
                 });
@@ -77,12 +84,15 @@ namespace BlessedBarbershop.API.Migrations
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Valor")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Nome")
+                        .IsUnique();
 
                     b.ToTable("ProdutosServicos");
                 });

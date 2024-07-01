@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BlessedBarbershop.API.Migrations
 {
     /// <inheritdoc />
-    public partial class initialMigration : Migration
+    public partial class initialDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,9 +19,9 @@ namespace BlessedBarbershop.API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Sobrenome = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DDD = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NumeroCelular = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    DDD = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    NumeroCelular = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     DataCadastro = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Pontos = table.Column<int>(type: "int", nullable: false)
                 },
@@ -36,7 +36,7 @@ namespace BlessedBarbershop.API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Nome = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Valor = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Categoria = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DataCadastro = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -72,6 +72,25 @@ namespace BlessedBarbershop.API.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Clientes_DDD_NumeroCelular",
+                table: "Clientes",
+                columns: new[] { "DDD", "NumeroCelular" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Clientes_Email",
+                table: "Clientes",
+                column: "Email",
+                unique: true,
+                filter: "[Email] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProdutosServicos_Nome",
+                table: "ProdutosServicos",
+                column: "Nome",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vendas_ClienteId",
