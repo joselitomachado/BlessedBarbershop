@@ -1,9 +1,7 @@
 # BlessedBarbershop
-
-## Introdução
 A BlessedBarbershop é uma barbearia que oferece serviços de barbearia e vende produtos relacionados. Este projeto é uma Web API em C# utilizando ASP.NET Core para gerenciar clientes, produtos/serviços, vendas e pontos.
 
-### Tecnologias e ferramentas utilizadas
+## Tecnologias e ferramentas utilizadas
 - Visual Studio 2022
 - ASP.NET Core 8
 - EF Core
