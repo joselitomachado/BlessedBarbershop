@@ -55,5 +55,9 @@ Para configurar o projeto em sua máquina local:
 - Visualizar Vendas por Data
 - Excluir Venda
 
+## Sobre os Autores/Organizadores:
+- Joselito Machado dos Santos
+- **Linkedin**: https://www.linkedin.com/in/joselitomachado/
+
 ## Conclusão
 A API BlessedBarbershop oferece uma solução completa para gerenciar clientes, produtos/serviços, vendas e pontos de fidelidade. Esta documentação fornece uma visão geral dos endpoints e configurações necessárias para começar a usar a API. Para mais detalhes, consulte o código-fonte e a documentação dos endpoints diretamente no Swagger.
