@@ -23,12 +23,12 @@ public class ProdutoServicoService : IProdutoServicoInterface
             var produtosServicos = await _barbershopDb.ProdutosServicos.ToListAsync();
 
             response.Data = produtosServicos;
+
             return response;
         }
         catch (Exception ex)
         {
             response.Message = ex.Message;
-            response.Status = false;
             return response;
         }
     }
@@ -39,21 +39,23 @@ public class ProdutoServicoService : IProdutoServicoInterface
 
         try
         {
-            var produtoServico = await _barbershopDb.ProdutosServicos.Where(p => p.Nome == nome).FirstOrDefaultAsync();
+            var produtoServico = await _barbershopDb.ProdutosServicos
+                .Where(p => p.Nome.Equals(nome, StringComparison.CurrentCultureIgnoreCase))
+                .FirstOrDefaultAsync();
 
             if (produtoServico == null)
             {
-                response.Message = "Nenhum produto ou serviço encontrado.";
+                response.Message = "Produto ou Serviço não encontrado.";
                 return response;
             }
 
             response.Data = produtoServico;
+
             return response;
         }
         catch (Exception ex)
         {
             response.Message = ex.Message;
-            response.Status = false;
             return response;
         }
     }
@@ -64,21 +66,21 @@ public class ProdutoServicoService : IProdutoServicoInterface
 
         try
         {
-            var produtoServico = await _barbershopDb.ProdutosServicos.FindAsync(id);
+            var produtoServico = await _barbershopDb.ProdutosServicos.FirstOrDefaultAsync(ps => ps.Id == id);
 
             if (produtoServico == null)
             {
-                response.Message = "Nenhum produto ou serviço encontrado.";
+                response.Message = "Produto ou Serviço não encontrado.";
                 return response;
             }
 
             response.Data = produtoServico;
+
             return response;
         }
         catch (Exception ex)
         {
             response.Message = ex.Message;
-            response.Status = false;
             return response;
         }
     }
@@ -89,9 +91,9 @@ public class ProdutoServicoService : IProdutoServicoInterface
 
         try
         {
-            if (await _barbershopDb.ProdutosServicos.AnyAsync(p => p.Nome == produtoServicoDto.Nome))
+            if (await _barbershopDb.ProdutosServicos.AnyAsync(p => p.Nome.Equals(produtoServicoDto.Nome, StringComparison.CurrentCultureIgnoreCase)))
             {
-                response.Message = "Produto ou serviço com o mesmo nome já existe.";
+                response.Message = "Produto ou Serviço já existe com este nome.";
                 return response;
             }
 
@@ -107,14 +109,13 @@ public class ProdutoServicoService : IProdutoServicoInterface
             await _barbershopDb.SaveChangesAsync();
 
             response.Data = produtoServico;
-            response.Message = "Produto ou serviço cadastrado com sucesso.";
+            response.Message = "Produto ou Serviço cadastrado com sucesso.";
 
             return response;
         }
         catch (Exception ex)
         {
             response.Message = ex.Message;
-            response.Status = false;
             return response;
         }
     }
@@ -125,11 +126,11 @@ public class ProdutoServicoService : IProdutoServicoInterface
 
         try
         {
-            var produtoServico = await _barbershopDb.ProdutosServicos.FindAsync(id);
+            var produtoServico = await _barbershopDb.ProdutosServicos.FirstOrDefaultAsync(ps => ps.Id == id);
 
             if (produtoServico == null)
             {
-                response.Message = "Nenhum produto ou serviço encontrado.";
+                response.Message = "Produto ou Serviço não encontrado.";
                 return response;
             }
 
@@ -141,14 +142,13 @@ public class ProdutoServicoService : IProdutoServicoInterface
             await _barbershopDb.SaveChangesAsync();
 
             response.Data = produtoServico;
-            response.Message = "Produto ou serviço atualizado com sucesso.";
+            response.Message = "Produto ou Serviço atualizado com sucesso.";
 
             return response;
         }
         catch (Exception ex)
         {
             response.Message = ex.Message;
-            response.Status = false;
             return response;
         }
     }
@@ -159,26 +159,24 @@ public class ProdutoServicoService : IProdutoServicoInterface
 
         try
         {
-            var produtoServico = await _barbershopDb.ProdutosServicos.FindAsync(id);
+            var produtoServico = await _barbershopDb.ProdutosServicos.FirstOrDefaultAsync(ps => ps.Id == id);
 
             if (produtoServico == null)
             {
-                response.Message = "Nenhum produto ou serviço encontrado.";
+                response.Message = "Produto ou Serviço não encontrado.";
                 return response;
             }
 
             _barbershopDb.ProdutosServicos.Remove(produtoServico);
             await _barbershopDb.SaveChangesAsync();
 
-            response.Data = produtoServico;
-            response.Message = "Produto ou serviço removido com sucesso.";
+            response.Message = "Produto ou Serviço removido com sucesso.";
 
             return response;
         }
         catch (Exception ex)
         {
             response.Message = ex.Message;
-            response.Status = false;
             return response;
         }
     }
