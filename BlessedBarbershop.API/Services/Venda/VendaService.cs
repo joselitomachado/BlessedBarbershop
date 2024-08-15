@@ -21,17 +21,17 @@ public class VendaService : IVendaInterface
         try
         {
             var vendas = await _barbershopDb.Vendas
-                .Include(x => x.Cliente)
-                .Include(x => x.ProdutoServico)
+                .Include(v => v.Cliente)
+                .Include(v => v.ProdutoServico)
                 .ToListAsync();
 
             response.Data = vendas;
+
             return response;
         }
         catch (Exception ex)
         {
             response.Message = ex.Message;
-            response.Status = false;
             return response;
         }
     }
@@ -44,23 +44,23 @@ public class VendaService : IVendaInterface
         {
             var venda = await _barbershopDb.Vendas
                 .Where(v => v.DataCadastro.Date == dataCadastro.Date)
-                .Include(x => x.Cliente)
-                .Include(x => x.ProdutoServico)
+                .Include(v => v.Cliente)
+                .Include(v => v.ProdutoServico)
                 .ToListAsync();
 
             if (venda == null)
             {
-                response.Message = "Nenhuma venda encontrado.";
+                response.Message = "Venda não encontrada.";
                 return response;
             }
 
             response.Data = venda;
+
             return response;
         }
         catch (Exception ex)
         {
             response.Message = ex.Message;
-            response.Status = false;
             return response;
         }
     }
@@ -79,17 +79,17 @@ public class VendaService : IVendaInterface
 
             if (vendas == null)
             {
-                response.Message = "Nenhuma venda encontrado.";
+                response.Message = "Venda não encontrada.";
                 return response;
             }
 
             response.Data = vendas;
+
             return response;
         }
         catch (Exception ex)
         {
             response.Message = ex.Message;
-            response.Status = false;
             return response;
         }
     }
@@ -99,12 +99,12 @@ public class VendaService : IVendaInterface
 
         try
         {
-            var cliente = await _barbershopDb.Clientes.FindAsync(vendaDto.ClienteId);
-            var produtoServico = await _barbershopDb.ProdutosServicos.FindAsync(vendaDto.ProdutoServicoId);
+            var cliente = await _barbershopDb.Clientes.FirstOrDefaultAsync(c => c.Id == vendaDto.ClienteId);
+            var produtoServico = await _barbershopDb.ProdutosServicos.FirstOrDefaultAsync(ps => ps.Id == vendaDto.ProdutoServicoId);
 
             if (cliente == null || produtoServico == null)
             {
-                response.Message = "Cliente ou produto/serviço não encontrado.";
+                response.Message = "Cliente ou Produto/Serviço não encontrado.";
                 return response;
             }
 
@@ -127,7 +127,6 @@ public class VendaService : IVendaInterface
         catch (Exception ex)
         {
             response.Message = ex.Message;
-            response.Status = false;
             return response;
         }
     }
@@ -138,16 +137,17 @@ public class VendaService : IVendaInterface
 
         try
         {
-            var venda = await _barbershopDb.Vendas.FindAsync(id);
+            var venda = await _barbershopDb.Vendas.FirstOrDefaultAsync(v => v.Id == id);
 
             if (venda == null)
             {
-                response.Message = "Nenhuma venda encontrado";
+                response.Message = "Venda não encontrada.";
+
                 return response;
             }
 
-            var cliente = await _barbershopDb.Clientes.FindAsync(venda.ClienteId);
-            var produtoServico = await _barbershopDb.ProdutosServicos.FindAsync(venda.ProdutoServicoId);
+            var cliente = await _barbershopDb.Clientes.FirstOrDefaultAsync(c => c.Id == venda.ClienteId);
+            var produtoServico = await _barbershopDb.ProdutosServicos.FirstOrDefaultAsync(ps => ps.Id == venda.ProdutoServicoId);
 
             if (cliente != null && produtoServico != null)
             {
@@ -157,7 +157,6 @@ public class VendaService : IVendaInterface
             _barbershopDb.Vendas.Remove(venda);
             await _barbershopDb.SaveChangesAsync();
 
-            response.Data = venda;
             response.Message = "Venda removida com sucesso.";
 
             return response;
@@ -165,7 +164,6 @@ public class VendaService : IVendaInterface
         catch (Exception ex)
         {
             response.Message = ex.Message;
-            response.Status = false;
             return response;
         }
     }
