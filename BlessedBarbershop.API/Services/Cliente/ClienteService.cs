@@ -1,6 +1,7 @@
 ﻿using BlessedBarbershop.API.DTOs.Cliente;
 using BlessedBarbershop.API.Models;
 using BlessedBarbershop.API.Persistence;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlessedBarbershop.API.Services.Cliente;
@@ -20,15 +21,17 @@ public class ClienteService : IClienteInterface
 
         try
         {
-            var clientes = await _barbershopDb.Clientes.OrderByDescending(c => c.Pontos).ToListAsync();
+            var clientes = await _barbershopDb.Clientes
+                .OrderByDescending(c => c.Pontos)
+                .ToListAsync();
 
             response.Data = clientes;
+
             return response;
         }
         catch (Exception ex)
         {
             response.Message = ex.Message;
-            response.Status = false;
             return response;
         }
     }
@@ -40,22 +43,22 @@ public class ClienteService : IClienteInterface
         try
         {
             var cliente = await _barbershopDb.Clientes
-                .Where(c => c.Nome == nome && c.Sobrenome == sobrenome)
+                .Where(c => c.Nome.Equals(nome, StringComparison.CurrentCultureIgnoreCase) && c.Sobrenome.Equals(sobrenome, StringComparison.CurrentCultureIgnoreCase))
                 .FirstOrDefaultAsync();
 
             if (cliente == null)
             {
-                response.Message = "Nenhum cliente encontrado.";
+                response.Message = "Cliente não encontrado.";
                 return response;
             }
 
             response.Data = cliente;
+
             return response;
         }
         catch (Exception ex)
         {
             response.Message = ex.Message;
-            response.Status = false;
             return response;
         }
     }
@@ -66,21 +69,21 @@ public class ClienteService : IClienteInterface
 
         try
         {
-            var cliente = await _barbershopDb.Clientes.FindAsync(id);
+            var cliente = await _barbershopDb.Clientes.FirstOrDefaultAsync(c => c.Id == id);
 
             if (cliente == null)
             {
-                response.Message = "Nenhum cliente encontrado.";
+                response.Message = "Cliente não encontrado.";
                 return response;
             }
 
             response.Data = cliente;
+
             return response;
         }
         catch (Exception ex)
         {
             response.Message = ex.Message;
-            response.Status = false;
             return response;
         }
     }
@@ -92,17 +95,17 @@ public class ClienteService : IClienteInterface
         try
         {
             var numeroCadastrado = await _barbershopDb.Clientes.AnyAsync(c => c.DDD == clienteDto.DDD && c.NumeroCelular == clienteDto.NumeroCelular);
-            var emailCadastrado = !string.IsNullOrEmpty(clienteDto.Email) && await _barbershopDb.Clientes.AnyAsync(c => c.Email == clienteDto.Email);
+            var emailCadastrado = !string.IsNullOrEmpty(clienteDto.Email) && await _barbershopDb.Clientes.AnyAsync(c => c.Email.Equals(clienteDto.Email, StringComparison.CurrentCultureIgnoreCase));
 
             if (numeroCadastrado)
             {
-                response.Message = "Cliente com o mesmo DDD e número de celular já existe.";
+                response.Message = "Número já cadastrado.";
                 return response;
             }
 
-            if(emailCadastrado)
+            if (emailCadastrado)
             {
-                response.Message = "Cliente com o mesmo email já existe.";
+                response.Message = "E-mail já cadastrado.";
                 return response;
             }
 
@@ -127,7 +130,6 @@ public class ClienteService : IClienteInterface
         catch (Exception ex)
         {
             response.Message = ex.Message;
-            response.Status = false;
             return response;
         }
     }
@@ -138,11 +140,11 @@ public class ClienteService : IClienteInterface
 
         try
         {
-            var cliente = await _barbershopDb.Clientes.FindAsync(id);
+            var cliente = await _barbershopDb.Clientes.FirstOrDefaultAsync(c => c.Id == id);
 
             if (cliente == null)
             {
-                response.Message = "Nenhum cliente encontrado.";
+                response.Message = "Cliente não encontrado.";
                 return response;
             }
 
@@ -159,13 +161,10 @@ public class ClienteService : IClienteInterface
             response.Message = "Cliente atualizado com sucesso.";
 
             return response;
-
-
         }
         catch (Exception ex)
         {
             response.Message = ex.Message;
-            response.Status = false;
             return response;
         }
     }
@@ -176,18 +175,17 @@ public class ClienteService : IClienteInterface
 
         try
         {
-            var cliente = await _barbershopDb.Clientes.FindAsync(id);
+            var cliente = await _barbershopDb.Clientes.FirstOrDefaultAsync(c => c.Id == id);
 
             if (cliente == null)
             {
-                response.Message = "Nenhum cliente encontrado.";
+                response.Message = "Cliente não encontrado.";
                 return response;
             }
 
             _barbershopDb.Clientes.Remove(cliente);
             await _barbershopDb.SaveChangesAsync();
 
-            response.Data = cliente;
             response.Message = "Cliente removido com sucesso.";
 
             return response;
@@ -195,7 +193,6 @@ public class ClienteService : IClienteInterface
         catch (Exception ex)
         {
             response.Message = ex.Message;
-            response.Status = false;
             return response;
         }
     }
