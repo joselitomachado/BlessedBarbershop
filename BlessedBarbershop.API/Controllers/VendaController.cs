@@ -18,7 +18,7 @@ public class VendaController : ControllerBase
 
     [HttpGet]
     [Route("ObterTodasVendas")]
-    public async Task<ActionResult<ResponseModel<List<VendaModel>>>> ObterTodasVendas()
+    public async Task<ActionResult<ResponseModel<IEnumerable<VendaModel>>>> ObterTodasVendas()
     {
         var vendas = await _vendaInterface.ObterTodasVendas();
 
@@ -27,7 +27,7 @@ public class VendaController : ControllerBase
 
     [HttpGet]
     [Route("ObterVendaPorData/{dataCadastro}")]
-    public async Task<ActionResult<ResponseModel<VendaModel>>> ObterVendaPorData(DateTime dataCadastro)
+    public async Task<ActionResult<ResponseModel<IEnumerable<VendaModel>>>> ObterVendaPorData([FromRoute] DateTime dataCadastro)
     {
         var venda = await _vendaInterface.ObterVendaPorData(dataCadastro);
 
@@ -36,7 +36,7 @@ public class VendaController : ControllerBase
 
     [HttpGet]
     [Route("ObterVendaPorCliente/{clienteId}")]
-    public async Task<ActionResult<ResponseModel<VendaModel>>> ObterVendaPorCliente(int clienteId)
+    public async Task<ActionResult<ResponseModel<IEnumerable<VendaModel>>>> ObterVendaPorCliente([FromRoute] int clienteId)
     {
         var venda = await _vendaInterface.ObterVendaPorCliente(clienteId);
 
@@ -45,7 +45,7 @@ public class VendaController : ControllerBase
 
     [HttpPost]
     [Route("CadastrarVenda")]
-    public async Task<ActionResult<ResponseModel<VendaModel>>> CadastrarVenda(VendaDto vendaDto)
+    public async Task<ActionResult<ResponseModel<VendaModel>>> CadastrarVenda([FromBody] VendaDto vendaDto)
     {
         var venda = await _vendaInterface.CadastrarVenda(vendaDto);
 
@@ -54,7 +54,7 @@ public class VendaController : ControllerBase
 
     [HttpDelete]
     [Route("ExcluirVenda/{id}")]
-    public async Task<ActionResult<ResponseModel<VendaModel>>> ExcluirVenda(int id)
+    public async Task<ActionResult<ResponseModel<VendaModel>>> ExcluirVenda([FromRoute] int id)
     {
         var venda = await _vendaInterface.ExcluirVenda(id);
 
