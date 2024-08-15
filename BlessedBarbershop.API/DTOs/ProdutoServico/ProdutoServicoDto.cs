@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BlessedBarbershop.API.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace BlessedBarbershop.API.DTOs.ProdutoServico;
 
@@ -9,5 +10,5 @@ public class ProdutoServicoDto
     [Required]
     public decimal Valor { get; set; }
     [Required]
-    public string Categoria { get; set; } = string.Empty;
+    public Categoria Categoria { get; set; }
 }
