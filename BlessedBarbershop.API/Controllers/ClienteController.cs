@@ -18,7 +18,7 @@ public class ClienteController : ControllerBase
 
     [HttpGet]
     [Route("ObterTodosClientes")]
-    public async Task<ActionResult<ResponseModel<List<ClienteModel>>>> ObterTodosClientes()
+    public async Task<ActionResult<ResponseModel<IEnumerable<ClienteModel>>>> ObterTodosClientes()
     {
         var clientes = await _clienteInterface.ObterTodosClientes();
 
@@ -36,7 +36,7 @@ public class ClienteController : ControllerBase
 
     [HttpGet]
     [Route("ObterClientePorID/{id}")]
-    public async Task<ActionResult<ResponseModel<ClienteModel>>> ObterClientePorID(int id)
+    public async Task<ActionResult<ResponseModel<ClienteModel>>> ObterClientePorID([FromRoute] int id)
     {
         var cliente = await _clienteInterface.ObterClientePorID(id);
 
@@ -45,7 +45,7 @@ public class ClienteController : ControllerBase
 
     [HttpPost]
     [Route("CadastrarCliente")]
-    public async Task<ActionResult<ResponseModel<ClienteModel>>> CadastrarCliente(ClienteDto clienteDto)
+    public async Task<ActionResult<ResponseModel<ClienteModel>>> CadastrarCliente([FromBody] ClienteDto clienteDto)
     {
         var cliente = await _clienteInterface.CadastrarCliente(clienteDto);
 
@@ -53,8 +53,8 @@ public class ClienteController : ControllerBase
     }
 
     [HttpPut]
-    [Route("AtualizarCliente")]
-    public async Task<ActionResult<ResponseModel<ClienteModel>>> AtualizarCliente(int id, ClienteDto clienteDto)
+    [Route("AtualizarCliente/{id}")]
+    public async Task<ActionResult<ResponseModel<ClienteModel>>> AtualizarCliente([FromRoute] int id, [FromBody] ClienteDto clienteDto)
     {
         var cliente = await _clienteInterface.AtualizarCliente(id, clienteDto);
 
@@ -62,8 +62,8 @@ public class ClienteController : ControllerBase
     }
 
     [HttpDelete]
-    [Route("ExcluirCliente")]
-    public async Task<ActionResult<ResponseModel<ClienteModel>>> ExcluirCliente(int id)
+    [Route("ExcluirCliente/{id}")]
+    public async Task<ActionResult<ResponseModel<ClienteModel>>> ExcluirCliente([FromRoute] int id)
     {
         var cliente = await _clienteInterface.ExcluirCliente(id);
 
