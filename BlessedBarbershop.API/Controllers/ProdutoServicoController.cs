@@ -18,7 +18,7 @@ public class ProdutoServicoController : ControllerBase
 
     [HttpGet]
     [Route("ObterTodosProdutosServicos")]
-    public async Task<ActionResult<ResponseModel<List<ProdutoServicoModel>>>> ObterTodosProdutosServicos()
+    public async Task<ActionResult<ResponseModel<IEnumerable<ProdutoServicoModel>>>> ObterTodosProdutosServicos()
     {
         var produtosServicos = await _produtoServicoInterface.ObterTodosProdutosServicos();
 
@@ -36,7 +36,7 @@ public class ProdutoServicoController : ControllerBase
 
     [HttpGet]
     [Route("ObterProdutoServicoPorId/{id}")]
-    public async Task<ActionResult<ResponseModel<ProdutoServicoModel>>> ObterProdutoServicoPorId(int id)
+    public async Task<ActionResult<ResponseModel<ProdutoServicoModel>>> ObterProdutoServicoPorId([FromRoute] int id)
     {
         var produtoServico = await _produtoServicoInterface.ObterProdutoServicoPorId(id);
 
@@ -45,7 +45,7 @@ public class ProdutoServicoController : ControllerBase
 
     [HttpPost]
     [Route("CadastrarProdutoServico")]
-    public async Task<ActionResult<ResponseModel<ProdutoServicoModel>>> CadastrarProdutoServico(ProdutoServicoDto produtoServicoDto)
+    public async Task<ActionResult<ResponseModel<ProdutoServicoModel>>> CadastrarProdutoServico([FromBody] ProdutoServicoDto produtoServicoDto)
     {
         var produtoServico = await _produtoServicoInterface.CadastrarProdutoServico(produtoServicoDto);
 
@@ -54,7 +54,7 @@ public class ProdutoServicoController : ControllerBase
 
     [HttpPut]
     [Route("AtualizarProdutoServico/{id}")]
-    public async Task<ActionResult<ResponseModel<ProdutoServicoModel>>> AtualizarProdutoServico(int id, ProdutoServicoDto produtoServicoDto)
+    public async Task<ActionResult<ResponseModel<ProdutoServicoModel>>> AtualizarProdutoServico([FromRoute] int id, [FromBody] ProdutoServicoDto produtoServicoDto)
     {
         var produtoServico = await _produtoServicoInterface.AtualizarProdutoServico(id, produtoServicoDto);
 
@@ -63,7 +63,7 @@ public class ProdutoServicoController : ControllerBase
 
     [HttpDelete]
     [Route("ExcluirProdutoServico/{id}")]
-    public async Task<ActionResult<ResponseModel<ProdutoServicoModel>>> ExcluirProdutoServico(int id)
+    public async Task<ActionResult<ResponseModel<ProdutoServicoModel>>> ExcluirProdutoServico([FromRoute] int id)
     {
         var produtoServico = await _produtoServicoInterface.ExcluirProdutoServico(id);
 
