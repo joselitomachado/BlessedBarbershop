@@ -5,6 +5,7 @@ A BlessedBarbershop é uma barbearia que oferece serviços de barbearia e vende 
 - Visual Studio 2022
 - ASP.NET Core 8
 - EF Core
+- Database In Memory
 - Swagger
 - Repository Pattern
 - Data Transfer Object (DTO)
