@@ -32,6 +32,8 @@ builder.Services.AddScoped<IProdutoServicoInterface, ProdutoServicoService>();
 builder.Services.AddScoped<IClienteInterface, ClienteService>();
 builder.Services.AddScoped<IVendaInterface, VendaService>();
 
+//builder.Services.AddDbContext<BlessedBarbershopDbContext>(options => options.UseInMemoryDatabase("BlessedBarbershopCs"));
+
 builder.Services.AddDbContext<BlessedBarbershopDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("BlessedBarbershopCs"));
